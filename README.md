@@ -44,9 +44,9 @@ python manage.py runserver
 
 ## Team Members & Roles
 
-- Backend Developer: <NAME> — Database design, authentication, APIs, vendor dashboard
-- Frontend Developer: <NAME> — UI/UX, templates, responsive design, buyer pages
-- Full‑Stack & DevOps: <NAME> — Integration, repository management, CI/CD, testing
+- Backend Developer: <Joel,Ala> — Database design, authentication, APIs, vendor dashboard
+- Frontend Developer: <Julius,Derla> — UI/UX, templates, responsive design, buyer pages
+- Full‑Stack & DevOps: <Samson,Wilmark,and Opligida,Erika> — Integration, repository management, CI/CD, testing
 
 Replace `<NAME>` with actual team member names before submission.
 
