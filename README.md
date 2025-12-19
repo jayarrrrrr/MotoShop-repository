@@ -44,11 +44,11 @@ python manage.py runserver
 
 ## Team Members & Roles
 
-- Backend Developer: <Joel,Ala> — Database design, authentication, APIs, vendor dashboard
-- Frontend Developer: <Julius,Derla> — UI/UX, templates, responsive design, buyer pages
-- Full‑Stack & DevOps: <Samson,Wilmark,and Opligida,Erika> — Integration, repository management, CI/CD, testing
+- Backend Developer: Joel Ala jr. — Database design, authentication, APIs, vendor dashboard
+- Frontend Developer: Julius Derla — UI/UX, templates, responsive design, buyer pages
+- Full‑Stack & DevOps: Samson Wilmark & Opligida Erika — Integration, repository management, CI/CD, testing
 
-Replace `<NAME>` with actual team member names before submission.
+
 
 ## Features
 
