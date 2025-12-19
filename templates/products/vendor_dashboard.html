@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Your Products</h2>
+    <a class="btn btn-primary" href="{% url 'vendor_add_product' %}">Add Product</a>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="card text-center p-3">
+        <div class="small text-muted">Total Products</div>
+        <div class="h4">{{ total_products }}</div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card text-center p-3">
+        <div class="small text-muted">Total Sales</div>
+        <div class="h4">₱{{ total_sales }}</div>
+      </div>
+    </div>
+  </div>
+
+  {% if products %}
+    <div class="list-group">
+      {% for p in products %}
+        <div class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <a href="{% url 'product_detail' p.pk %}"><strong>{{ p.name }}</strong></a>
+            <div class="text-muted small">{% if p.category %}{{ p.category.name }}{% else %}Uncategorized{% endif %}</div>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <span class="badge bg-secondary me-2">₱{{ p.price }}</span>
+            <a class="btn btn-sm btn-primary" href="{% url 'vendor_edit_product' p.pk %}">Edit</a>
+            <form method="post" action="{% url 'vendor_delete_product' p.pk %}" class="d-inline-block ms-2" onsubmit="return confirm('⚠ Are you sure you want to delete this product?');">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No products yet. Start by adding one.</p>
+  {% endif %}
+
+{% endblock %}
+
+<!-- Delete confirmation modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Confirm delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="mb-0">⚠ Are you sure you want to delete <strong id="deleteProductName"></strong>?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <form method="post" id="deleteForm" class="mb-0">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger">Yes, Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+;(function () {
+  function initDeleteHandlers() {
+    var deleteModal = document.getElementById('deleteModal')
+    if (!deleteModal) return
+    // Handle delete clicks: try Bootstrap modal, otherwise fallback to confirm+POST
+    var deleteButtons = document.querySelectorAll('.btn-delete')
+    function getCookie(name) {
+      var value = "; " + document.cookie
+      var parts = value.split("; " + name + "=")
+      if (parts.length === 2) return parts.pop().split(';').shift()
+    }
+
+    deleteButtons.forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault()
+        var deleteUrl = btn.getAttribute('data-delete-url')
+        var productName = btn.getAttribute('data-product-name')
+        var form = document.getElementById('deleteForm')
+        var nameEl = document.getElementById('deleteProductName')
+        if (form && deleteUrl) form.action = deleteUrl
+        if (nameEl) nameEl.textContent = productName || ''
+
+        // Try to show Bootstrap modal if available
+        try {
+          if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+            var bsModal = new bootstrap.Modal(deleteModal)
+            bsModal.show()
+            return
+          }
+        } catch (err) {
+          console.warn('Bootstrap modal unavailable', err)
+        }
+
+        // Fallback: native confirm and submit POST with CSRF
+        var confirmed = window.confirm('⚠ Are you sure you want to delete "' + (productName || '') + '"?')
+        if (!confirmed) return
+
+        // create and submit form with CSRF token from cookie
+        var csrf = getCookie('csrftoken')
+        var f = document.createElement('form')
+        f.method = 'post'
+        f.action = deleteUrl
+        if (csrf) {
+          var inp = document.createElement('input')
+          inp.type = 'hidden'
+          inp.name = 'csrfmiddlewaretoken'
+          inp.value = csrf
+          f.appendChild(inp)
+        }
+        document.body.appendChild(f)
+        f.submit()
+      })
+    })
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initDeleteHandlers)
+  } else {
+    initDeleteHandlers()
+  }
+})()
+</script>

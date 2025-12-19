@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign In / Register{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-6">
+    <div class="card p-4">
+      <h4>Sign In</h4>
+      <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="form_type" value="login">
+        <div class="mb-3">{{ login_form.username.label_tag }} {{ login_form.username }}</div>
+        <div class="mb-3">{{ login_form.password.label_tag }} {{ login_form.password }}</div>
+        <div class="d-grid"><button class="btn btn-primary">Sign in</button></div>
+      </form>
+    </div>
+    <div class="text-center mt-2">
+      <a href="#">Forgot password?</a>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card p-3 mb-3">
+          <h5>Register Customer</h5>
+          <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="form_type" value="customer_register">
+            {{ customer_form.username }}
+            {{ customer_form.email }}
+            {{ customer_form.password1 }}
+            {{ customer_form.password2 }}
+            {{ customer_form.address }}
+            {{ customer_form.phone }}
+            <div class="d-grid mt-2"><button class="btn btn-outline-primary">Register</button></div>
+          </form>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card p-3 mb-3">
+          <h5>Register Vendor</h5>
+          <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="form_type" value="vendor_register">
+            {{ vendor_form.username }}
+            {{ vendor_form.email }}
+            {{ vendor_form.password1 }}
+            {{ vendor_form.password2 }}
+            {{ vendor_form.shop_name }}
+            {{ vendor_form.phone }}
+            <div class="d-grid mt-2"><button class="btn btn-outline-success">Register</button></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

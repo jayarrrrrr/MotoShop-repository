@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block hero %}{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-header">
+          <h2 class="h5 mb-0">Add Product (Vendor)</h2>
+        </div>
+        <div class="card-body">
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+              <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+            {% endif %}
+
+            {% for field in form %}
+              {% if field.field.widget.input_type == 'checkbox' %}
+                <div class="mb-3 form-check">
+                  {{ field }}
+                  {{ field.label_tag }}
+                  {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                  {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+                </div>
+              {% else %}
+                <div class="mb-3">
+                  {{ field.label_tag }}
+                  {{ field }}
+                  {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+                  {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                </div>
+              {% endif %}
+            {% endfor %}
+
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-primary">Create Product</button>
+              <a href="{% url 'product_list' %}" class="btn btn-secondary">Cancel</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

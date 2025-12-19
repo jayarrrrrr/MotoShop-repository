@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Order Placed{% endblock %}
+{% block content %}
+<div class="card p-4">
+  <h2 class="mb-3">Thank you — your order is placed</h2>
+  <p class="mb-2">Order number: <strong>{{ order.order_number }}</strong></p>
+  <p class="mb-2">Total: <strong>₱{{ order.total_amount }}</strong></p>
+  <p class="mb-0">We have emailed you an order confirmation.</p>
+  <div class="mt-3">
+    <a href="{% url 'product_list' %}" class="btn btn-primary me-2">Continue Shopping</a>
+    <a href="{% url 'my_orders' %}" class="btn btn-outline-secondary">View Your Orders</a>
+  </div>
+</div>
+{% endblock %}

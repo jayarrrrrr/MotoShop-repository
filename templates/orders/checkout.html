@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}Checkout{% endblock %}
+{% block content %}
+<h2 class="mb-4">Checkout</h2>
+<div class="row">
+	<div class="col-lg-7">
+		<div class="card mb-4">
+			<div class="card-body">
+							{% if error %}
+							<div class="alert alert-danger">{{ error }}</div>
+							{% endif %}
+				<h5 class="card-title mb-3">Billing & Shipping</h5>
+							<form id="checkout-form" method="post" action="">
+					{% csrf_token %}
+					<div class="row g-3">
+						<div class="col-md-6">
+							<label class="form-label">First name</label>
+										<input type="text" class="form-control" name="first_name" value="{% if form %}{{ form.first_name }}{% endif %}">
+						</div>
+						<div class="col-md-6">
+							<label class="form-label">Last name</label>
+										<input type="text" class="form-control" name="last_name" value="{% if form %}{{ form.last_name }}{% endif %}">
+						</div>
+						<div class="col-12">
+							<label class="form-label">Address</label>
+										<input type="text" class="form-control" name="address" value="{% if form %}{{ form.address }}{% endif %}">
+						</div>
+						<div class="col-md-6">
+							<label class="form-label">City</label>
+										<input type="text" class="form-control" name="city" value="{% if form %}{{ form.city }}{% endif %}">
+						</div>
+						<div class="col-md-3">
+							<label class="form-label">State</label>
+										<input type="text" class="form-control" name="state" value="{% if form %}{{ form.state }}{% endif %}">
+						</div>
+						<div class="col-md-3">
+							<label class="form-label">ZIP</label>
+										<input type="text" class="form-control" name="zip" value="{% if form %}{{ form.zip }}{% endif %}">
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-lg-5">
+		<div class="card">
+			<div class="card-body">
+				<h5 class="card-title">Order Summary</h5>
+				<div class="d-flex justify-content-between mb-2">
+					<span>Items</span>
+					<span>{% if cart %}{{ cart.items.count }}{% else %}0{% endif %}</span>
+				</div>
+				<div class="d-flex justify-content-between mb-3">
+					<span>Subtotal</span>
+					<strong>₱{% if cart %}{{ cart.get_total }}{% else %}0{% endif %}</strong>
+				</div>
+				<button type="submit" form="checkout-form" class="btn btn-success w-100">Place Order</button>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

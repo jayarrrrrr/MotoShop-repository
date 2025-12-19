@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card auth-card p-4">
+      <h2 class="card-title mb-2">Welcome back</h2>
+      <p class="text-muted">Sign in to continue to your account.</p>
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+
+        <div class="mb-3">
+          {{ form.username.label_tag }}
+          {{ form.username }}
+          {{ form.username.errors }}
+        </div>
+
+        <div class="mb-3">
+          {{ form.password.label_tag }}
+          {{ form.password }}
+          {{ form.password.errors }}
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div>
+            <a href="{% url 'password_reset' %}" class="small">Forgot password?</a>
+          </div>
+        </div>
+
+        <div class="d-grid mt-2">
+          <button type="submit" class="btn btn-primary btn-lg">Sign in</button>
+        </div>
+      </form>
+
+      <div class="form-footer mt-3 text-center">
+        Don't have an account?
+        <a href="{% url 'customer_register' %}">Register as Customer</a>
+        &nbsp;|&nbsp;
+        <a href="{% url 'vendor_register' %}">Register as Vendor</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
